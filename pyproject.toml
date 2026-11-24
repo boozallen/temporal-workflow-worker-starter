@@ -1,0 +1,203 @@
+[build-system]
+requires = ["setuptools>=70.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "temporal_workflow_worker_starter"
+version = "1.0.0"
+license = "Apache-2.0"
+license-files = ["LICENSE*", "NOTICE*"]
+description = "Template: Temporal workflow worker starter - customize for your project"
+authors = [
+    {name = "Agentic AI Platform Team", email = "platform-team@example.com"}
+]
+readme = "README.md"
+requires-python = ">=3.15,<3.16"
+
+dependencies = [
+    "temporalio>=1.11.0",
+    "foundry-temporal>=4.0.0,<5.0.0",
+    "foundry-agent-core>=1.4.0,<2.0.0",  # transitive dep of foundry-temporal; listed so uv can route it to the foundry index
+    "pydantic>=2.10.0",
+    "pydantic-settings>=2.6.0",
+    "pyyaml>=6.0.2",
+    "python-dotenv>=1.2.2",
+    "httpx>=0.28.0",
+    "structlog>=24.5.0",
+    "foundry-temporal-agents>=0.4.0,<0.5.0",
+    "aiohttp>=3.14.4",
+    "multidict>=6.9.1",  # CVE-2026-104874, transitive via aiohttp/yarl
+]
+
+[project.optional-dependencies]
+foundry = [
+    "foundry-temporal>=4.0.0,<5.0.0",
+]
+
+[project.scripts]
+workflow-worker = "src.main:run_worker"
+
+[project.urls]
+"Homepage" = "https://github.com/your-org/temporal-workflow-worker-starter"
+"Bug Reports" = "https://github.com/your-org/temporal-workflow-worker-starter/issues"
+"Source" = "https://github.com/your-org/temporal-workflow-worker-starter"
+"Documentation" = "https://boozallen.github.io/agent-foundry/docs/"
+
+[tool.uv]
+constraint-dependencies = [
+    "certifi>=2026.10.19",
+    "virtualenv>=21.14.13",
+    "opentelemetry-api>=1.45.2",
+]
+
+[tool.uv.sources]
+foundry-agent-core = {url = "https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-agent-core/v1.4.0/foundry_agent_core-1.4.0-py3-none-any.whl"}
+foundry-temporal = {url = "https://github.com/boozallen/temporal-packages/releases/download/foundry-temporal/v4.0.0/foundry_temporal-4.0.0-py3-none-any.whl"}
+foundry-temporal-agents = {url = "https://github.com/boozallen/temporal-packages/releases/download/foundry-temporal-agents/v0.4.0/foundry_temporal_agents-0.4.0-py3-none-any.whl"}
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+exclude = ["tests*"]
+
+[tool.setuptools.package-data]
+"*" = ["py.typed"]
+
+[tool.coverage.run]
+source = ["src"]
+branch = true
+
+[tool.coverage.report]
+exclude_also = [
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\b.*:",
+]
+
+[tool.basedpyright]
+pythonVersion = "3.15"
+include = ["src"]
+exclude = ["**/build", "**/dist"]
+typeCheckingMode = "basic"
+
+[tool.bandit]
+exclude_dirs = ["tests", "openspec"]
+targets = ["src"]
+skips = ["B101"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py314"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+    "ANN", # flake8-annotations
+    "S",   # bandit security checks
+    "PTH", # flake8-use-pathlib
+    "SIM", # flake8-simplify
+    "TCH", # flake8-type-checking
+]
+ignore = [
+    "E501",
+    "B008",  # do not perform function calls in argument defaults
+    "S101",  # use of assert (common in tests)
+    "S603",  # subprocess call without shell=True
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["B011", "S101", "S104", "S105", "S106", "ANN"]  # allow assert False, binding to all interfaces, test credential placeholders, and annotations in tests
+
+# ruff handles import sorting (replaces isort)
+[tool.ruff.lint.isort]
+known-first-party = ["src"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+# Template Documentation
+[tool.pydocstyle]
+convention = "google"
+add_ignore = ["D100", "D104", "D107"]  # Allow missing docstrings for modules, __init__, and __main__
+
+# Modern dependency groups (PEP 735)
+[dependency-groups]
+dev = [
+    "pytest>=7.4.3",
+    "pytest-asyncio>=1.3.0",
+    "pytest-cov>=7.0.0",
+    "pytest-xdist[psutil]==3.8.0",
+    "ruff>=0.8.0",
+    "bandit>=1.7.0",
+    "basedpyright>=1.29.0",
+    "pip-audit>=2.7.0",
+    "pre-commit>=4.0.0",
+    "types-PyYAML>=6.0.0",
+]
+
+test = [
+    "pytest>=7.4.3",
+    "pytest-asyncio>=1.3.0",
+    "pytest-cov>=7.0.0",
+    "httpx>=0.28.0",  # For testing HTTP requests
+]
+
+docs = [
+    "mkdocs>=1.6.0",
+    "mkdocs-material>=9.5.0",
+    "mkdocstrings[python]>=0.26.0",
+]
+
+production = [
+    # Production monitoring and metrics
+    "prometheus-client>=0.21.0",  # Metrics collection only
+]
+
+# Modern pytest configuration
+[tool.pytest.ini_options]
+minversion = "7.4"
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--verbose",
+    "--tb=short",
+    "--cov=src",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-fail-under=70",
+]
+testpaths = ["tests"]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "slow: Slow tests",
+    "workflow: Workflow execution tests",
+    "activity: Activity tests",
+    "agent: Tests requiring live agent",
+    "dynamo: Tests requiring DynamoDB",
+    "e2e: End-to-end workflow tests",
+    "docker: Tests that require Docker",
+]
+asyncio_mode = "auto"
+filterwarnings = [
+    "ignore::DeprecationWarning:pydantic.*",
+    "ignore::pytest.PytestUnraisableExceptionWarning",
+    "ignore::DeprecationWarning:foundry_temporal.*",
+]
+
+# Note: This is a template directory, not a production package.
+# Projects created from this template should customize:
+# - Project name, version, authors, and URLs
+# - Dependencies based on specific requirements
+# - Scripts and entry points for their application

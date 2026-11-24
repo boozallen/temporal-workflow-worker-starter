@@ -1,0 +1,12 @@
+# TEMPLATE: Core Workflow Configuration
+#
+# This file registers workflows for the template worker.
+# Teams should customize this file to register their own workflows.
+
+workflows:
+  # Template workflow - replace with your own workflows
+  - module: "src.workflows"
+    classes: ["MyWorkflow"]
+
+  # To see template patterns, check src/workflows.py
+  # To run worker, use: just worker
