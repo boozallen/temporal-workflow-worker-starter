@@ -1,0 +1,22 @@
+{
+  "templates": {
+    "analysis": "Based on my comprehensive analysis of {topic}, I have identified the following key insights:\n\n1. **Primary Finding**: {primary_finding}\n2. **Supporting Evidence**: The data shows {evidence} with {confidence}% confidence\n3. **Recommendations**: {recommendations}\n\nThis analysis was conducted using advanced AI methodologies and cross-referenced with multiple data sources.",
+    "summary": "Here is a concise summary of {topic}:\n\n{summary_content}\n\nKey takeaways:\n- {takeaway1}\n- {takeaway2}\n- {takeaway3}",
+    "default": "I have completed the research analysis for your request. The findings indicate positive trends and actionable insights that can inform your decision-making process."
+  },
+  "sample_data": {
+    "primary_finding": "Market conditions are favorable for expansion",
+    "evidence": "increased user engagement and positive sentiment metrics",
+    "confidence": 95,
+    "recommendations": "Proceed with phased rollout strategy",
+    "summary_content": "The analysis reveals significant opportunities for growth and optimization",
+    "takeaway1": "User satisfaction scores exceed industry benchmarks",
+    "takeaway2": "Technical implementation shows strong scalability potential",
+    "takeaway3": "ROI projections indicate positive returns within 6 months"
+  },
+  "metadata": {
+    "type": "research",
+    "processing_time_range": [2, 8],
+    "confidence_range": [85, 98]
+  }
+}

@@ -1,0 +1,62 @@
+name: Feature Request
+description: Suggest a new feature or enhancement for the template
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting a feature. Please describe the problem and your proposed solution.
+
+        This template aims to be a useful starting point, not a complete framework. The most
+        valuable suggestions are ones that make forking and customizing easier for everyone,
+        rather than ones that add domain-specific behavior a fork would supply itself.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Which part of the template would this affect?
+      options:
+        - Workflow or activity template code
+        - Worker bootstrap or configuration
+        - Local development stack (compose, mock agent)
+        - Docker image or build
+        - Tests
+        - Documentation
+        - Development commands (justfile)
+        - Other / not sure
+    validations:
+      required: false
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve? What is your use case?
+      placeholder: When I fork the template and try to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Describe any alternative solutions or features you've considered, including whether this could live in a fork rather than the template.
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other context, examples, or references that may help.
+    validations:
+      required: false

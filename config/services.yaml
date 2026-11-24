@@ -1,0 +1,9 @@
+# Template Services Configuration
+#
+# Configure external services and APIs that activities will use.
+# This configuration is loaded by the worker and made available to workflows and activities.
+
+# Mock Strands agent for template demonstration
+mock_strands_agent:
+  url: "http://mock-strands-agent:8080"
+  description: "Mock Strands agent for template workflow demonstration"
