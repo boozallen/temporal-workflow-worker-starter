@@ -1,0 +1,14 @@
+{
+  "templates": {
+    "en": "Hello {name}! Welcome to our advanced workflow system powered by AI.",
+    "es": "¡Hola {name}! Bienvenido a nuestro sistema de flujos de trabajo avanzado impulsado por IA.",
+    "fr": "Bonjour {name}! Bienvenue dans notre système de workflows avancé alimenté par l'IA.",
+    "de": "Hallo {name}! Willkommen in unserem fortschrittlichen KI-gestützten Workflow-System.",
+    "default": "Hello {name}! Welcome to our workflow system."
+  },
+  "metadata": {
+    "type": "greeting",
+    "supported_languages": ["en", "es", "fr", "de"],
+    "variables": ["name"]
+  }
+}

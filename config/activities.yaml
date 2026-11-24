@@ -1,0 +1,23 @@
+# TEMPLATE: Core Activities Configuration
+#
+# This file registers activities for the template worker.
+# Teams should customize this file to register their own activities.
+
+activities:
+  # Template activity - replace with your own activities
+  - module: "src.activities"
+    functions:
+      - name: "my_activity"
+        description: "Template activity demonstrating basic patterns"
+        timeout_seconds: 60
+      - name: "get_service_config_activity"
+        description: "Load service config via activity for deterministic workflows"
+        timeout_seconds: 30
+
+  # Built-in Strands agent activity from foundry-temporal-agents package.
+  # Must be registered on the worker for execute_activity("call_strands_agent") to work.
+  - module: "foundry_temporal_agents"
+    functions:
+      - name: "call_strands_agent"
+        description: "Generic activity for calling any Strands agent via A2A protocol"
+        timeout_seconds: 300

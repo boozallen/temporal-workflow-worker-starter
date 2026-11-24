@@ -1,0 +1,62 @@
+services:
+  # Temporal Worker
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - TEMPORAL_HOST=${TEMPORAL_HOST:-host.docker.internal:7233}
+      - TEMPORAL_NAMESPACE=default
+      - TASK_QUEUE=${TASK_QUEUE:-workflow-task-queue}
+      # Local dev only: the compose Temporal server is plaintext, so no application
+      # TLS is negotiated. "platform" asserts TLS is terminated by the deployment
+      # platform / service mesh. Deployed environments MUST set this explicitly to
+      # match their actual transport posture ("tls" or "mtls" when the application
+      # terminates TLS itself) rather than inheriting this value.
+      - TEMPORAL_TLS_MODE=${TEMPORAL_TLS_MODE:-platform}
+      # Engine client authentication (required at startup, independent of
+      # TEMPORAL_TLS_MODE — see env.template). Local dev placeholders: under
+      # "platform" mode these paths are never read, so no real certificate
+      # material is needed here. Deployed environments MUST replace these
+      # with real mTLS material (or TEMPORAL_AUTH_* OAuth2 settings instead).
+      - TEMPORAL_TLS_CERT=${TEMPORAL_TLS_CERT:-/dev-placeholder/client.pem}
+      - TEMPORAL_TLS_KEY=${TEMPORAL_TLS_KEY:-/dev-placeholder/client.key}
+      # Bearer token for agent calls (see env.template). The mock agent does not
+      # check it, so it may stay empty locally. Deployed agents usually require it.
+      - FOUNDRY_AGENT_BEARER_TOKEN=${FOUNDRY_AGENT_BEARER_TOKEN:-}
+      - WORKER_IDENTITY=docker-worker-1
+      - LOG_LEVEL=INFO
+    networks:
+      - temporal-network
+    restart: unless-stopped
+    depends_on:
+      mock-strands-agent:
+        condition: service_started
+
+  # Mock Strands Agent for local development only. Replace it with a real
+  # agent before deploying (see the Next Steps guide).
+  mock-strands-agent:
+    build:
+      context: ./mock-strands-agent
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    environment:
+      - LOG_LEVEL=INFO
+    networks:
+      - temporal-network
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - import urllib.request; urllib.request.urlopen('http://localhost:8080/health', timeout=2)
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+
+networks:
+  temporal-network:
