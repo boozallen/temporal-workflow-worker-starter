@@ -34,9 +34,6 @@ foundry = [
     "foundry-temporal>=4.0.0,<5.0.0",
 ]
 
-[project.scripts]
-workflow-worker = "src.main:run_worker"
-
 [project.urls]
 "Homepage" = "https://github.com/your-org/temporal-workflow-worker-starter"
 "Bug Reports" = "https://github.com/your-org/temporal-workflow-worker-starter/issues"
