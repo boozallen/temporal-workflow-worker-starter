@@ -8,9 +8,7 @@ version = "1.0.0"
 license = "Apache-2.0"
 license-files = ["LICENSE*", "NOTICE*"]
 description = "Template: Temporal workflow worker starter - customize for your project"
-authors = [
-    {name = "Agentic AI Platform Team", email = "platform-team@example.com"}
-]
+authors = [{ name = "Booz Allen Hamilton" }]
 readme = "README.md"
 requires-python = ">=3.15,<3.16"
 
